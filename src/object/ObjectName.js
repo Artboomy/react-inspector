@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { useStyles } from '../styles';
+import HighlightContext from '../tree-view/HighlightContext';
+import reactStringReplace from 'react-string-replace';
 
 /**
  * A view for object property names.
@@ -18,8 +20,15 @@ const ObjectName = ({ name, dimmed = false, styles = {} }) => {
     ...(dimmed ? themeStyles['dimmed'] : {}),
     ...styles,
   };
+  const highlight = useContext(HighlightContext);
 
-  return <span style={appliedStyles}>{name}</span>;
+  return (
+    <span style={appliedStyles}>
+      {highlight
+        ? reactStringReplace(name, highlight, (v) => <mark>{v}</mark>)
+        : name}
+    </span>
+  );
 };
 
 ObjectName.propTypes = {

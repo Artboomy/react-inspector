@@ -22,3 +22,7 @@ webpack.prod.config.js
 
 stories
 .storybook
+.github
+.idea
+*.tgz
+*.js.map

@@ -11,7 +11,7 @@ import { getPropertyValue } from '../utils/propertyUtils';
 import { themeAcceptor } from '../styles';
 
 const createIterator = (showNonenumerable, sortObjectKeys) => {
-  const objectIterator = function*(data) {
+  const objectIterator = function* (data) {
     const shouldIterate =
       (typeof data === 'object' && data !== null) || typeof data === 'function';
     if (!shouldIterate) return;
@@ -106,7 +106,6 @@ const ObjectInspector = ({
 }) => {
   const dataIterator = createIterator(showNonenumerable, sortObjectKeys);
   const renderer = nodeRenderer ? nodeRenderer : defaultNodeRenderer;
-
   return (
     <TreeView
       nodeRenderer={renderer}
@@ -133,6 +132,8 @@ ObjectInspector.propTypes = {
 
   /** Provide a custom nodeRenderer */
   nodeRenderer: PropTypes.func,
+  /** Custom highlight function */
+  highlight: PropTypes.string,
 };
 
 export default themeAcceptor(ObjectInspector);
