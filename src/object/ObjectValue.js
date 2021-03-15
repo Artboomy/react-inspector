@@ -114,7 +114,9 @@ const ObjectValue = ({ object, styles, isPreview = false }) => {
       ) {
         return <span>{`Buffer[${object.length}]`}</span>;
       }
-
+      if (object.constructor.name === 'Object') {
+        return <span>{Object.keys(object).length ? '{…}' : '{}'}</span>;
+      }
       return <span>{object.constructor.name}</span>;
     case 'function':
       return (

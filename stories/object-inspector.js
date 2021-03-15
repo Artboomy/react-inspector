@@ -21,6 +21,9 @@ storiesOf('BigInts', module)
   .add('negative', () => <Inspector data={-1n} />);
 
 const longString = Array(500).fill('lorem impsum').join(' ');
+class SomeNamedObject {}
+const namedObject = new SomeNamedObject();
+
 storiesOf('Strings', module)
   .add('empty string', () => <Inspector data="" />)
   .add('simple', () => <Inspector data="hello" />)
@@ -337,6 +340,7 @@ storiesOf('Nested object examples', module)
     <Inspector
       expandLevel={3}
       data={{
+        a: namedObject,
         a0: longString,
         a1: 1,
         a2: 'A2',

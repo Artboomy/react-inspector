@@ -7,9 +7,11 @@ describe('ObjectValue', () => {
     const tree = TestRenderer.create(<ObjectValue object={0} />);
     expect(tree).toMatchSnapshot();
   });
-  
+
   it('should render bigint', () => {
-    const tree = TestRenderer.create(<ObjectValue object={9007199254740993n} />).toJSON();
+    const tree = TestRenderer.create(
+      <ObjectValue object={9007199254740993n} />
+    ).toJSON();
     expect(tree.type).toBe('span');
     expect(tree.children).toEqual(['9007199254740993', 'n']);
   });
@@ -67,7 +69,7 @@ describe('ObjectValue', () => {
   it('should render an empty object', () => {
     const tree = TestRenderer.create(<ObjectValue object={{}} />).toJSON();
     expect(tree.type).toBe('span');
-    expect(tree.children).toEqual(['Object']);
+    expect(tree.children).toEqual(['{}']);
   });
 
   it('should render a simple object', () => {
@@ -75,7 +77,7 @@ describe('ObjectValue', () => {
       <ObjectValue object={{ k: 'v' }} />
     ).toJSON();
     expect(tree.type).toBe('span');
-    expect(tree.children).toEqual(['Object']);
+    expect(tree.children).toEqual(['{…}']);
   });
 
   it('should render a null prototyped object', () => {
