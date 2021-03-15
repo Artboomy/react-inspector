@@ -337,6 +337,7 @@ storiesOf('Nested object examples', module)
     <Inspector
       expandLevel={3}
       data={{
+        a0: longString,
         a1: 1,
         a2: 'A2',
         a3: true,
@@ -351,7 +352,6 @@ storiesOf('Nested object examples', module)
           console.log('hello world');
         },
         a7: new Date('2005-04-03'),
-        a8: longString,
       }}
     />
   ))

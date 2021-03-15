@@ -5,20 +5,28 @@ import { useStyles } from '../styles';
 import HighlightContext from '../utils/HighlightContext';
 import reactStringReplace from 'react-string-replace';
 
-const stringRender = (value, partialHighlight, spanStyle) => {
+const stringRender = (value, partialHighlight, spanStyle, isPreview) => {
   let result = value;
   if (typeof value === 'string') {
     const lengthLimit = 500;
     const isLongValue = value.length > lengthLimit;
     if (isLongValue) {
-      result = (
-        <details>
-          <summary style={{ outline: 'none', cursor: 'pointer' }}>
-            <i>String of {value.length} characters</i>
-          </summary>
-          <span style={spanStyle}>{value}</span>
-        </details>
-      );
+      if (isPreview) {
+        result = (
+          <span style={spanStyle}>
+            "{partialHighlight(value.slice(0, 100))}"
+          </span>
+        );
+      } else {
+        result = (
+          <details style={{ display: 'inline-block' }}>
+            <summary style={{ outline: 'none', cursor: 'pointer' }}>
+              <i>String of {value.length} characters</i>
+            </summary>
+            <span style={spanStyle}>{value}</span>
+          </details>
+        );
+      }
     } else {
       result = <span style={spanStyle}>"{partialHighlight(value)}"</span>;
     }
@@ -30,7 +38,7 @@ const stringRender = (value, partialHighlight, spanStyle) => {
  * Can be used to render tree node in ObjectInspector
  * or render objects in TableInspector.
  */
-const ObjectValue = ({ object, styles }) => {
+const ObjectValue = ({ object, styles, isPreview = false }) => {
   const themeStyles = useStyles('ObjectValue');
 
   const highlight = useContext(HighlightContext);
@@ -63,7 +71,8 @@ const ObjectValue = ({ object, styles }) => {
       return stringRender(
         object,
         partialHighlight,
-        mkStyle('objectValueString')
+        mkStyle('objectValueString'),
+        isPreview
       );
     case 'boolean':
       return (
@@ -129,6 +138,7 @@ ObjectValue.propTypes = {
   // the object to describe
   object: PropTypes.any,
   highlight: PropTypes.func,
+  isPreview: PropTypes.bool,
 };
 
 export default ObjectValue;

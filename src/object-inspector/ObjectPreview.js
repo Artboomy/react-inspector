@@ -6,7 +6,7 @@ import ObjectName from '../object/ObjectName';
 import { useStyles } from '../styles';
 
 import { hasOwnProperty } from '../utils/objectPrototype';
-import { getPropertyValue } from "../utils/propertyUtils";
+import { getPropertyValue } from '../utils/propertyUtils';
 
 /* intersperse arr with separator */
 function intersperse(arr, sep) {
@@ -68,7 +68,7 @@ const ObjectPreview = ({ data }) => {
           <span key={propertyName}>
             <ObjectName name={propertyName || `""`} />
             :&nbsp;
-            <ObjectValue object={propertyValue} />
+            <ObjectValue object={propertyValue} isPreview />
             {ellipsis}
           </span>
         );
@@ -76,12 +76,16 @@ const ObjectPreview = ({ data }) => {
       }
     }
 
-    const objectConstructorName = object.constructor ? object.constructor.name : 'Object';
+    const objectConstructorName = object.constructor
+      ? object.constructor.name
+      : 'Object';
 
     return (
       <React.Fragment>
         <span style={styles.objectDescription}>
-          {objectConstructorName === 'Object' ? '' : `${objectConstructorName} `}
+          {objectConstructorName === 'Object'
+            ? ''
+            : `${objectConstructorName} `}
         </span>
         <span style={styles.preview}>
           {'{'}
