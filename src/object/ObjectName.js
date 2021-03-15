@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { useStyles } from '../styles';
-import HighlightContext from '../tree-view/HighlightContext';
+import HighlightContext from '../utils/HighlightContext';
 import reactStringReplace from 'react-string-replace';
 
 /**

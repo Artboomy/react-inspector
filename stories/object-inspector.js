@@ -20,9 +20,11 @@ storiesOf('BigInts', module)
   .add('zero', () => <Inspector data={0n} />)
   .add('negative', () => <Inspector data={-1n} />);
 
+const longString = Array(500).fill('lorem impsum').join(' ');
 storiesOf('Strings', module)
   .add('empty string', () => <Inspector data="" />)
-  .add('simple', () => <Inspector data="hello" />);
+  .add('simple', () => <Inspector data="hello" />)
+  .add('long', () => <Inspector data={longString} />);
 
 storiesOf('Booleans', module)
   .add('true', () => <Inspector data={true} />)
@@ -349,6 +351,7 @@ storiesOf('Nested object examples', module)
           console.log('hello world');
         },
         a7: new Date('2005-04-03'),
+        a8: longString,
       }}
     />
   ))

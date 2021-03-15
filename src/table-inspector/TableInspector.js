@@ -12,12 +12,14 @@ import DataContainer from './DataContainer';
 import HeaderContainer from './HeaderContainer';
 
 import { themeAcceptor, useStyles } from '../styles';
+import HighlightContext from '../utils/HighlightContext';
 
 const TableInspector = ({
   // The JS object you would like to inspect, either an array or an object
   data,
   // An array of the names of the columns you'd like to display in the table
   columns,
+  highlight,
 }) => {
   const styles = useStyles('TableInspector');
 
@@ -45,7 +47,7 @@ const TableInspector = ({
     }));
   }, []);
 
-  const handleTHClick = useCallback(col => {
+  const handleTHClick = useCallback((col) => {
     setState(({ sortColumn, sortAscending }) => ({
       sorted: true,
       sortIndexColumn: false,
@@ -68,7 +70,7 @@ const TableInspector = ({
     colHeaders = columns;
   }
 
-  let rowsData = rowHeaders.map(rowHeader => data[rowHeader]);
+  let rowsData = rowHeaders.map((rowHeader) => data[rowHeader]);
 
   let columnDataWithRowIndexes; /* row indexes are [0..nRows-1] */
   // TODO: refactor
@@ -133,30 +135,32 @@ const TableInspector = ({
       };
     };
     const sortedRowIndexes = columnDataWithRowIndexes
-      .sort(comparator(item => item[0], sortAscending))
-      .map(item => item[1]); // sorted row indexes
-    rowHeaders = sortedRowIndexes.map(i => rowHeaders[i]);
-    rowsData = sortedRowIndexes.map(i => rowsData[i]);
+      .sort(comparator((item) => item[0], sortAscending))
+      .map((item) => item[1]); // sorted row indexes
+    rowHeaders = sortedRowIndexes.map((i) => rowHeaders[i]);
+    rowsData = sortedRowIndexes.map((i) => rowsData[i]);
   }
 
   return (
-    <div style={styles.base}>
-      <HeaderContainer
-        columns={colHeaders}
-        /* for sorting */
-        sorted={sorted}
-        sortIndexColumn={sortIndexColumn}
-        sortColumn={sortColumn}
-        sortAscending={sortAscending}
-        onTHClick={handleTHClick}
-        onIndexTHClick={handleIndexTHClick}
-      />
-      <DataContainer
-        rows={rowHeaders}
-        columns={colHeaders}
-        rowsData={rowsData}
-      />
-    </div>
+    <HighlightContext.Provider value={highlight || ''}>
+      <div style={styles.base}>
+        <HeaderContainer
+          columns={colHeaders}
+          /* for sorting */
+          sorted={sorted}
+          sortIndexColumn={sortIndexColumn}
+          sortColumn={sortColumn}
+          sortAscending={sortAscending}
+          onTHClick={handleTHClick}
+          onIndexTHClick={handleIndexTHClick}
+        />
+        <DataContainer
+          rows={rowHeaders}
+          columns={colHeaders}
+          rowsData={rowsData}
+        />
+      </div>
+    </HighlightContext.Provider>
   );
 };
 
@@ -169,6 +173,7 @@ TableInspector.propTypes = {
    * An array of the names of the columns you'd like to display in the table
    */
   columns: PropTypes.array,
+  highlight: PropTypes.string,
 };
 
 export default themeAcceptor(TableInspector);

@@ -2,9 +2,29 @@ import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 
 import { useStyles } from '../styles';
-import HighlightContext from '../tree-view/HighlightContext';
+import HighlightContext from '../utils/HighlightContext';
 import reactStringReplace from 'react-string-replace';
 
+const stringRender = (value, partialHighlight, spanStyle) => {
+  let result = value;
+  if (typeof value === 'string') {
+    const lengthLimit = 500;
+    const isLongValue = value.length > lengthLimit;
+    if (isLongValue) {
+      result = (
+        <details>
+          <summary style={{ outline: 'none', cursor: 'pointer' }}>
+            <i>String of {value.length} characters</i>
+          </summary>
+          <span style={spanStyle}>{value}</span>
+        </details>
+      );
+    } else {
+      result = <span style={spanStyle}>"{partialHighlight(value)}"</span>;
+    }
+  }
+  return result;
+};
 /**
  * A short description of the object values.
  * Can be used to render tree node in ObjectInspector
@@ -19,7 +39,9 @@ const ObjectValue = ({ object, styles }) => {
   };
   const partialHighlight = (value) => {
     return highlight
-      ? reactStringReplace(value, highlight, (v) => <mark>{v}</mark>)
+      ? reactStringReplace(value, highlight, (v, idx) => (
+          <mark key={idx}>{v}</mark>
+        ))
       : value;
   };
   const mkStyle = (key) => ({ ...themeStyles[key], ...styles });
@@ -38,10 +60,10 @@ const ObjectValue = ({ object, styles }) => {
         </span>
       );
     case 'string':
-      return (
-        <span style={mkStyle('objectValueString')}>
-          "{partialHighlight(object)}"
-        </span>
+      return stringRender(
+        object,
+        partialHighlight,
+        mkStyle('objectValueString')
       );
     case 'boolean':
       return (

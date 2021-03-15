@@ -34,6 +34,7 @@ Inspector.propTypes = {
   data: PropTypes.any,
   name: PropTypes.string,
   table: PropTypes.bool,
+  highlight: PropTypes.string,
 };
 
 export { Inspector };
