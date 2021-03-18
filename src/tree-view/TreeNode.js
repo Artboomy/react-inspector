@@ -12,7 +12,7 @@ const Arrow = ({ expanded, styles }) => (
   </span>
 );
 
-const TreeNode = memo(props => {
+const TreeNode = memo((props) => {
   props = {
     expanded: true,
     nodeRenderer: ({ name }) => <span>{name}</span>,
@@ -34,14 +34,18 @@ const TreeNode = memo(props => {
   const styles = useStyles('TreeNode');
   const NodeRenderer = nodeRenderer;
 
+  let hasChildren = shouldShowArrow || Children.count(children) > 0;
   return (
     <li
       aria-expanded={expanded}
       role="treeitem"
-      style={styles.treeNodeBase}
+      style={{
+        ...styles.treeNodeBase,
+        ...(hasChildren && { cursor: 'pointer' }),
+      }}
       title={title}>
       <div style={styles.treeNodePreviewContainer} onClick={onClick}>
-        {shouldShowArrow || Children.count(children) > 0 ? (
+        {hasChildren ? (
           <Arrow expanded={expanded} styles={styles.treeNodeArrow} />
         ) : (
           shouldShowPlaceholder && (

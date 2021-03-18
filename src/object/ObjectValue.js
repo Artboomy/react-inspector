@@ -14,7 +14,7 @@ const stringRender = (value, partialHighlight, spanStyle, isPreview) => {
       if (isPreview) {
         result = (
           <span style={spanStyle}>
-            "{partialHighlight(value.slice(0, 100))}"
+            "{partialHighlight(value.slice(0, 50))}"
           </span>
         );
       } else {
