@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { storiesOf } from '@storybook/react';
 
-import Inspector from '../src';
+import Inspector, { HighlightContext } from '../src';
 
 function namedFunction() {}
 
@@ -224,25 +224,26 @@ const HighlightExample = () => {
         onChange={(e) => setValue(e.target.value)}
         placeholder="Property key/value"
       />
-      <Inspector
-        highlight={value}
-        data={{
-          a1: 1,
-          a2: 'A2',
-          a3: true,
-          a4: undefined,
-          a5: {
-            'a5-1': null,
-            'a5-2': ['a5-2-1', 'a5-2-2'],
-            'a5-3': {},
-          },
-          a6: function () {
-            // eslint-disable-next-line
-            console.log('hello world');
-          },
-          a7: new Date('2005-04-03'),
-        }}
-      />
+      <HighlightContext.Provider value={value}>
+        <Inspector
+          data={{
+            a1: 1,
+            a2: 'A2',
+            a3: true,
+            a4: undefined,
+            a5: {
+              'a5-1': null,
+              'a5-2': ['a5-2-1', 'a5-2-2'],
+              'a5-3': {},
+            },
+            a6: function () {
+              // eslint-disable-next-line
+              console.log('hello world');
+            },
+            a7: new Date('2005-04-03'),
+          }}
+        />
+      </HighlightContext.Provider>
     </section>
   );
 };

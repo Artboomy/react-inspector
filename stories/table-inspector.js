@@ -1,7 +1,7 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 
-import { TableInspector } from '../src';
+import { HighlightContext, TableInspector } from '../src';
 
 storiesOf('Table', module)
   .add('simple', () => (
@@ -33,17 +33,18 @@ storiesOf('Table', module)
     />
   ))
   .add('Highlight', () => (
-    <TableInspector
-      highlight="in"
-      data={{
-        person1: { firstName: 'John', lastName: 'Smith' },
-        person2: {
-          firstName: 'Martin',
-          middleName: 'Luther',
-          lastName: 'King',
-        },
-      }}
-    />
+    <HighlightContext.Provider value="in">
+      <TableInspector
+        data={{
+          person1: { firstName: 'John', lastName: 'Smith' },
+          person2: {
+            firstName: 'Martin',
+            middleName: 'Luther',
+            lastName: 'King',
+          },
+        }}
+      />
+    </HighlightContext.Provider>
   ))
   .add('data and columns props', () => (
     <TableInspector

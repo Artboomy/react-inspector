@@ -12,14 +12,12 @@ import DataContainer from './DataContainer';
 import HeaderContainer from './HeaderContainer';
 
 import { themeAcceptor, useStyles } from '../styles';
-import HighlightContext from '../utils/HighlightContext';
 
 const TableInspector = ({
   // The JS object you would like to inspect, either an array or an object
   data,
   // An array of the names of the columns you'd like to display in the table
   columns,
-  highlight,
 }) => {
   const styles = useStyles('TableInspector');
 
@@ -142,25 +140,23 @@ const TableInspector = ({
   }
 
   return (
-    <HighlightContext.Provider value={highlight || ''}>
-      <div style={styles.base}>
-        <HeaderContainer
-          columns={colHeaders}
-          /* for sorting */
-          sorted={sorted}
-          sortIndexColumn={sortIndexColumn}
-          sortColumn={sortColumn}
-          sortAscending={sortAscending}
-          onTHClick={handleTHClick}
-          onIndexTHClick={handleIndexTHClick}
-        />
-        <DataContainer
-          rows={rowHeaders}
-          columns={colHeaders}
-          rowsData={rowsData}
-        />
-      </div>
-    </HighlightContext.Provider>
+    <div style={styles.base}>
+      <HeaderContainer
+        columns={colHeaders}
+        /* for sorting */
+        sorted={sorted}
+        sortIndexColumn={sortIndexColumn}
+        sortColumn={sortColumn}
+        sortAscending={sortAscending}
+        onTHClick={handleTHClick}
+        onIndexTHClick={handleIndexTHClick}
+      />
+      <DataContainer
+        rows={rowHeaders}
+        columns={colHeaders}
+        rowsData={rowsData}
+      />
+    </div>
   );
 };
 

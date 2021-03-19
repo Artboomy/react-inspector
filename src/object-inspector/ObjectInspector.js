@@ -9,7 +9,6 @@ import { propertyIsEnumerable } from '../utils/objectPrototype';
 import { getPropertyValue } from '../utils/propertyUtils';
 
 import { themeAcceptor } from '../styles';
-import HighlightContext from '../utils/HighlightContext';
 
 const createIterator = (showNonenumerable, sortObjectKeys) => {
   const objectIterator = function* (data) {
@@ -108,13 +107,11 @@ const ObjectInspector = ({
   const dataIterator = createIterator(showNonenumerable, sortObjectKeys);
   const renderer = nodeRenderer ? nodeRenderer : defaultNodeRenderer;
   return (
-    <HighlightContext.Provider value={treeViewProps.highlight || ''}>
-      <TreeView
-        nodeRenderer={renderer}
-        dataIterator={dataIterator}
-        {...treeViewProps}
-      />
-    </HighlightContext.Provider>
+    <TreeView
+      nodeRenderer={renderer}
+      dataIterator={dataIterator}
+      {...treeViewProps}
+    />
   );
 };
 
@@ -135,7 +132,6 @@ ObjectInspector.propTypes = {
 
   /** Provide a custom nodeRenderer */
   nodeRenderer: PropTypes.func,
-  highlight: PropTypes.string,
 };
 
 export default themeAcceptor(ObjectInspector);

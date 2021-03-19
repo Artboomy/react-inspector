@@ -11,6 +11,8 @@ export ObjectRootLabel from './object-inspector/ObjectRootLabel';
 export ObjectValue from './object/ObjectValue';
 export ObjectName from './object/ObjectName';
 
+export HighlightContext from './utils/HighlightContext';
+
 // Wrapping the inspectors
 import ObjectInspector from './object-inspector/ObjectInspector';
 import TableInspector from './table-inspector/TableInspector';
@@ -34,7 +36,6 @@ Inspector.propTypes = {
   data: PropTypes.any,
   name: PropTypes.string,
   table: PropTypes.bool,
-  highlight: PropTypes.string,
 };
 
 export { Inspector };
