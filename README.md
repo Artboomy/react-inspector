@@ -1,8 +1,12 @@
 # react-inspector
 
-[![build status](https://img.shields.io/travis/storybookjs/react-inspector/master.svg?style=flat-square)](https://travis-ci.org/storybookjs/react-inspector)
-[![npm version](https://img.shields.io/npm/v/react-inspector.svg?style=flat-square)](https://www.npmjs.com/package/react-inspector)
-[![npm downloads](https://img.shields.io/npm/dm/react-inspector.svg?style=flat-square)](https://www.npmjs.com/package/react-inspector)
+## Disclaimer
+
+This is fork version of original package with highlight functionality. Not published on npm.
+
+Original readme below.
+
+----------------------
 
 Power of [Browser DevTools](https://developers.google.com/web/tools/chrome-devtools/) inspectors right inside your React app. Check out the [interactive playground](https://storybookjs.github.io/react-inspector/) or [storybook](https://react-inspector.netlify.com).
 
