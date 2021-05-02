@@ -1,6 +1,6 @@
 {
   "name": "react-inspector",
-  "version": "5.2.0",
+  "version": "5.3.0",
   "description": "Power of Browser DevTools inspectors right inside your React app",
   "keywords": [
     "devtools",
@@ -38,7 +38,7 @@
     "LICENSE",
     "HISTORY.md",
     ".js",
-    ".d.ts"
+    "*.d.ts"
   ],
   "scripts": {
     "build": "rollup -c",

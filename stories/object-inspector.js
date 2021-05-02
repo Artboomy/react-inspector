@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { storiesOf } from '@storybook/react';
 
 import Inspector, { HighlightContext } from '../src';
+import SearchContext from '../src/utils/SearchContext';
 
 function namedFunction() {}
 
@@ -21,7 +22,9 @@ storiesOf('BigInts', module)
   .add('negative', () => <Inspector data={-1n} />);
 
 const longString = Array(500).fill('lorem impsum').join(' ');
+
 class SomeNamedObject {}
+
 const namedObject = new SomeNamedObject();
 
 storiesOf('Strings', module)
@@ -214,6 +217,23 @@ storiesOf('Functions', module)
     <Inspector showNonenumerable data={namedFunction} />
   ));
 
+const data = {
+  a1: 1,
+  a2: 'A2',
+  a3: true,
+  a4: undefined,
+  a5: {
+    'a5-1': null,
+    'a5-2': ['a5-2-1', 'a5-2-2'],
+    'a5-3': {},
+  },
+  a6: function () {
+    // eslint-disable-next-line
+    console.log('hello world');
+  },
+  a7: new Date('2005-04-03'),
+};
+
 const HighlightExample = () => {
   const [value, setValue] = useState('');
   return (
@@ -225,25 +245,43 @@ const HighlightExample = () => {
         placeholder="Property key/value"
       />
       <HighlightContext.Provider value={value}>
-        <Inspector
-          data={{
-            a1: 1,
-            a2: 'A2',
-            a3: true,
-            a4: undefined,
-            a5: {
-              'a5-1': null,
-              'a5-2': ['a5-2-1', 'a5-2-2'],
-              'a5-3': {},
-            },
-            a6: function () {
-              // eslint-disable-next-line
-              console.log('hello world');
-            },
-            a7: new Date('2005-04-03'),
-          }}
-        />
+        <Inspector data={data} />
       </HighlightContext.Provider>
+    </section>
+  );
+};
+const SearchExample = () => {
+  const [value, setValue] = useState('');
+  const [isDarkTheme, setDarkTheme] = useState(false);
+  return (
+    <section>
+      <div>
+        <label>
+          <input
+            type="checkbox"
+            value={isDarkTheme}
+            onChange={(e) => setDarkTheme(e.target.checked)}
+          />
+          isDarkTheme
+        </label>
+      </div>
+      <div>
+        <input
+          type="text"
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+          placeholder="Property key/value"
+        />
+      </div>
+      <SearchContext.Provider value={value}>
+        <Inspector
+          data={data}
+          theme={isDarkTheme ? 'chromeDark' : 'chromeLight'}
+          searchCallback={(result) =>
+            console.info(`Search result is ${result}`)
+          }
+        />
+      </SearchContext.Provider>
     </section>
   );
 };
@@ -360,4 +398,5 @@ storiesOf('Nested object examples', module)
       }}
     />
   ))
-  .add('Highlight example', () => <HighlightExample />);
+  .add('Highlight example', () => <HighlightExample />)
+  .add('Search example', () => <SearchExample />);

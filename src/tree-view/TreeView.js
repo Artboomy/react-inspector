@@ -16,7 +16,7 @@ import {
 
 import { useStyles } from '../styles';
 
-const ConnectedTreeNode = memo((props) => {
+const ConnectedTreeNode = memo(function ConnectedTreeNodeMemo(props) {
   const { data, dataIterator, path, depth, nodeRenderer } = props;
   const [expandedPaths, setExpandedPaths] = useContext(ExpandedPathsContext);
   const nodeHasChildNodes = hasChildNodes(data, dataIterator);
@@ -50,7 +50,7 @@ const ConnectedTreeNode = memo((props) => {
               ({ name, data, ...renderNodeProps }) => {
                 return (
                   <ConnectedTreeNode
-                    name={name}
+                    name={String(name)}
                     data={data}
                     depth={depth + 1}
                     path={`${path}.${name}`}
@@ -77,42 +77,47 @@ ConnectedTreeNode.propTypes = {
   nodeRenderer: PropTypes.func,
 };
 
-const TreeView = memo(
-  ({ name, data, dataIterator, nodeRenderer, expandPaths, expandLevel }) => {
-    const styles = useStyles('TreeView');
-    const stateAndSetter = useState({});
-    const [, setExpandedPaths] = stateAndSetter;
+const TreeView = memo(function TreeViewMemo({
+  name,
+  data,
+  dataIterator,
+  nodeRenderer,
+  expandPaths,
+  expandLevel,
+}) {
+  const styles = useStyles('TreeView');
+  const stateAndSetter = useState({});
+  const [, setExpandedPaths] = stateAndSetter;
 
-    useLayoutEffect(
-      () =>
-        setExpandedPaths((prevExpandedPaths) =>
-          getExpandedPaths(
-            data,
-            dataIterator,
-            expandPaths,
-            expandLevel,
-            prevExpandedPaths
-          )
-        ),
-      [data, dataIterator, expandPaths, expandLevel]
-    );
+  useLayoutEffect(
+    () =>
+      setExpandedPaths((prevExpandedPaths) =>
+        getExpandedPaths(
+          data,
+          dataIterator,
+          expandPaths,
+          expandLevel,
+          prevExpandedPaths
+        )
+      ),
+    [data, dataIterator, expandPaths, expandLevel]
+  );
 
-    return (
-      <ExpandedPathsContext.Provider value={stateAndSetter}>
-        <ol role="tree" style={styles.treeViewOutline}>
-          <ConnectedTreeNode
-            name={name}
-            data={data}
-            dataIterator={dataIterator}
-            depth={0}
-            path={DEFAULT_ROOT_PATH}
-            nodeRenderer={nodeRenderer}
-          />
-        </ol>
-      </ExpandedPathsContext.Provider>
-    );
-  }
-);
+  return (
+    <ExpandedPathsContext.Provider value={stateAndSetter}>
+      <ol role="tree" style={styles.treeViewOutline}>
+        <ConnectedTreeNode
+          name={name}
+          data={data}
+          dataIterator={dataIterator}
+          depth={0}
+          path={DEFAULT_ROOT_PATH}
+          nodeRenderer={nodeRenderer}
+        />
+      </ol>
+    </ExpandedPathsContext.Provider>
+  );
+});
 
 TreeView.propTypes = {
   name: PropTypes.string,

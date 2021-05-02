@@ -12,7 +12,7 @@ const Arrow = ({ expanded, styles }) => (
   </span>
 );
 
-const TreeNode = memo((props) => {
+const TreeNode = memo(function TreeNodeMemo(props) {
   props = {
     expanded: true,
     nodeRenderer: ({ name }) => <span>{name}</span>,

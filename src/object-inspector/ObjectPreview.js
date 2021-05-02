@@ -66,7 +66,7 @@ const ObjectPreview = ({ data }) => {
         const propertyValue = getPropertyValue(object, propertyName);
         propertyNodes.push(
           <span key={propertyName}>
-            <ObjectName name={propertyName || `""`} />
+            <ObjectName name={propertyName || `""`} isPreview />
             :&nbsp;
             <ObjectValue object={propertyValue} isPreview />
             {ellipsis}
@@ -96,5 +96,7 @@ const ObjectPreview = ({ data }) => {
     );
   }
 };
+
+ObjectPreview.displayName = 'ObjectPreview';
 
 export default ObjectPreview;

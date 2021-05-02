@@ -1,8 +1,8 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { useStyles } from '../styles';
-import HighlightContext from '../utils/HighlightContext';
-import reactStringReplace from 'react-string-replace';
+import { useHighlight } from '../utils/HighlightContext';
+import { partialHighlight } from '../utils/stringManipulations';
 
 /**
  * A view for object property names.
@@ -13,19 +13,25 @@ import reactStringReplace from 'react-string-replace';
  * If the property name is not enumerable (`Object.prototype.propertyIsEnumerable()`),
  * the property name will be dimmed to show the difference.
  */
-const ObjectName = ({ name, dimmed = false, styles = {} }) => {
+const ObjectName = ({
+  name,
+  dimmed = false,
+  styles = {},
+  isPreview = false,
+}) => {
   const themeStyles = useStyles('ObjectName');
   const appliedStyles = {
     ...themeStyles.base,
     ...(dimmed ? themeStyles['dimmed'] : {}),
+    ...(isPreview ? themeStyles['preview'] : {}),
     ...styles,
   };
-  const highlight = useContext(HighlightContext);
+  const highlight = useHighlight(dimmed);
 
   return (
     <span style={appliedStyles}>
       {highlight
-        ? reactStringReplace(name, highlight, (v) => <mark>{v}</mark>)
+        ? partialHighlight(name, highlight, { style: themeStyles['highlight'] })
         : name}
     </span>
   );

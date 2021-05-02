@@ -27,7 +27,7 @@ export default [
         include: 'node_modules/**',
       }),
       babel({ runtimeHelpers: true }),
-      cleanup()
+      cleanup(),
     ],
   },
   {
@@ -48,7 +48,7 @@ export default [
         include: 'node_modules/**',
       }),
       babel({ runtimeHelpers: true }),
-      cleanup()
+      cleanup(),
     ],
   },
   {
@@ -77,13 +77,14 @@ export default [
             'useCallback',
             'useState',
             'useMemo',
+            'useEffect',
             'createContext',
             'memo',
             'Children',
           ],
         },
       }),
-      cleanup()
+      cleanup(),
     ],
   },
 ];

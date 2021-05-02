@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import TreeView from '../tree-view/TreeView';
-
 import ObjectRootLabel from './ObjectRootLabel';
 import ObjectLabel from './ObjectLabel';
 
@@ -9,8 +8,9 @@ import { propertyIsEnumerable } from '../utils/objectPrototype';
 import { getPropertyValue } from '../utils/propertyUtils';
 
 import { themeAcceptor } from '../styles';
+import SearchContext, { markMatches } from '../utils/SearchContext';
 
-const createIterator = (showNonenumerable, sortObjectKeys) => {
+const createIterator = (showNonenumerable, sortObjectKeys, symbol) => {
   const objectIterator = function* (data) {
     const shouldIterate =
       (typeof data === 'object' && data !== null) || typeof data === 'function';
@@ -47,11 +47,26 @@ const createIterator = (showNonenumerable, sortObjectKeys) => {
 
       for (const propertyName of keys) {
         if (propertyIsEnumerable.call(data, propertyName)) {
-          const propertyValue = getPropertyValue(data, propertyName);
-          yield {
-            name: propertyName || `""`,
-            data: propertyValue,
-          };
+          const hasAnyFields = !symbol || data[symbol].length;
+          if (
+            !symbol ||
+            data[symbol].includes(
+              dataIsArray ? Number(propertyName) : propertyName
+            )
+          ) {
+            const propertyValue = getPropertyValue(data, propertyName);
+            yield {
+              name: propertyName || `""`,
+              data: propertyValue,
+            };
+          } else if (hasAnyFields && !dataIsArray) {
+            const propertyValue = getPropertyValue(data, propertyName);
+            yield {
+              name: propertyName || `""`,
+              data: propertyValue,
+              isDimmed: true,
+            };
+          }
         } else if (showNonenumerable) {
           // To work around the error (happens some time when propertyName === 'caller' || propertyName === 'arguments')
           // 'caller' and 'arguments' are restricted function properties and cannot be accessed in this context
@@ -88,11 +103,22 @@ const createIterator = (showNonenumerable, sortObjectKeys) => {
   return objectIterator;
 };
 
-const defaultNodeRenderer = ({ depth, name, data, isNonenumerable }) =>
+const defaultNodeRenderer = ({
+  depth,
+  name,
+  data,
+  isNonenumerable,
+  isDimmed,
+}) =>
   depth === 0 ? (
     <ObjectRootLabel name={name} data={data} />
   ) : (
-    <ObjectLabel name={name} data={data} isNonenumerable={isNonenumerable} />
+    <ObjectLabel
+      name={name}
+      data={data}
+      isNonenumerable={isNonenumerable}
+      isDimmed={isDimmed}
+    />
   );
 
 /**
@@ -102,14 +128,34 @@ const ObjectInspector = ({
   showNonenumerable = false,
   sortObjectKeys,
   nodeRenderer,
+  data,
   ...treeViewProps
 }) => {
-  const dataIterator = createIterator(showNonenumerable, sortObjectKeys);
+  const searchValue = useContext(SearchContext);
+  const symbol = searchValue ? Symbol.for(searchValue) : null;
+  const dataIterator = createIterator(
+    showNonenumerable,
+    sortObjectKeys,
+    symbol
+  );
   const renderer = nodeRenderer ? nodeRenderer : defaultNodeRenderer;
+  if (symbol) {
+    markMatches(
+      { data },
+      'data',
+      (k, v) => {
+        return (
+          String(k).includes(searchValue) || String(v).includes(searchValue)
+        );
+      },
+      symbol
+    );
+  }
   return (
     <TreeView
       nodeRenderer={renderer}
       dataIterator={dataIterator}
+      data={data}
       {...treeViewProps}
     />
   );

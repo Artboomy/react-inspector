@@ -1,6 +1,6 @@
 import unselectable from './unselectable';
 
-export default theme => ({
+export default (theme) => ({
   DOMNodePreview: {
     htmlOpenTag: {
       base: {
@@ -54,7 +54,14 @@ export default theme => ({
       color: theme.OBJECT_NAME_COLOR,
     },
     dimmed: {
-      opacity: 0.6,
+      opacity: 0.7,
+    },
+    preview: {
+      color: theme.OBJECT_NAME_COLOR_PREVIEW,
+    },
+    highlight: {
+      backgroundColor: theme.TREENODE_HIGHLIGHT_BACKGROUND_COLOR,
+      outline: '1px solid rgba(255, 255, 0, 0.8)',
     },
   },
 
@@ -87,6 +94,13 @@ export default theme => ({
     objectValueFunctionName: {
       fontStyle: 'italic',
     },
+    objectValueDimmed: {
+      opacity: 0.7,
+    },
+    highlight: {
+      backgroundColor: theme.TREENODE_HIGHLIGHT_BACKGROUND_COLOR,
+      outline: '1px solid rgba(255, 255, 0, 0.8)',
+    },
   },
 
   TreeView: {
@@ -94,7 +108,7 @@ export default theme => ({
       padding: 0,
       margin: 0,
       listStyleType: 'none',
-    }
+    },
   },
 
   TreeNode: {
