@@ -20,28 +20,30 @@ const stringRender = (
   if (typeof value === 'string') {
     const lengthLimit = 500;
     const isLongValue = value.length > lengthLimit;
+    const modifiedSpanStyle = {
+      ...spanStyle,
+      ...(isPreview && { whiteSpace: 'normal' }),
+    };
     if (isLongValue) {
       if (isPreview) {
         result = (
-          <span style={spanStyle}>
-            "{partialHighlight(value.slice(0, 50), highlight, style)}"
+          <span style={modifiedSpanStyle}>
+            "{partialHighlight(value.slice(0, 50), highlight, style)}…"
           </span>
         );
       } else {
         result = (
-          <details style={{ display: 'inline-block' }}>
+          <details style={{ display: 'inline-block', ...spanStyle }}>
             <summary style={{ outline: 'none', cursor: 'pointer' }}>
               <i>String of {value.length} characters</i>
             </summary>
-            <span style={spanStyle}>
-              {partialHighlight(value, highlight, style)}
-            </span>
+            <span>{partialHighlight(value, highlight, style)}</span>
           </details>
         );
       }
     } else {
       result = (
-        <span style={spanStyle}>
+        <span style={modifiedSpanStyle}>
           "{partialHighlight(value, highlight, style)}"
         </span>
       );
@@ -62,7 +64,6 @@ const ObjectValue = ({
   isDimmed = false,
 }) => {
   const themeStyles = useStyles('ObjectValue');
-
   const highlight = useHighlight(isDimmed);
   const mkStyle = (key) => ({
     ...themeStyles[key],
@@ -125,7 +126,7 @@ const ObjectValue = ({
       }
       if (object instanceof Date) {
         return (
-          <span>
+          <span style={isDimmed ? themeStyles['objectValueDimmed'] : {}}>
             {partialHighlight(object.toString(), highlight, {
               style: themeStyles['highlight'],
             })}
@@ -138,7 +139,12 @@ const ObjectValue = ({
         );
       }
       if (Array.isArray(object)) {
-        return <span>{`Array(${object.length})`}</span>;
+        return (
+          <span
+            style={
+              isDimmed ? themeStyles['objectValueDimmed'] : {}
+            }>{`Array(${object.length})`}</span>
+        );
       }
       if (!object.constructor) {
         return <span>Object</span>;
@@ -150,7 +156,11 @@ const ObjectValue = ({
         return <span>{`Buffer[${object.length}]`}</span>;
       }
       if (object.constructor.name === 'Object') {
-        return <span>{Object.keys(object).length ? '{…}' : '{}'}</span>;
+        return (
+          <span style={isDimmed ? themeStyles['objectValueDimmed'] : {}}>
+            {Object.keys(object).length ? '{…}' : '{}'}
+          </span>
+        );
       }
       return <span>{object.constructor.name}</span>;
     case 'function':

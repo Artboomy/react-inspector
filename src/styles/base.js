@@ -54,7 +54,7 @@ export default (theme) => ({
       color: theme.OBJECT_NAME_COLOR,
     },
     dimmed: {
-      opacity: 0.7,
+      opacity: 0.5,
     },
     preview: {
       color: theme.OBJECT_NAME_COLOR_PREVIEW,
@@ -95,7 +95,7 @@ export default (theme) => ({
       fontStyle: 'italic',
     },
     objectValueDimmed: {
-      opacity: 0.7,
+      opacity: 0.5,
     },
     highlight: {
       backgroundColor: theme.TREENODE_HIGHLIGHT_BACKGROUND_COLOR,

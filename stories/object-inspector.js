@@ -254,7 +254,7 @@ const SearchExample = () => {
   const [value, setValue] = useState('');
   const [isDarkTheme, setDarkTheme] = useState(false);
   return (
-    <section>
+    <section style={{ whiteSpace: 'pre' }}>
       <div>
         <label>
           <input

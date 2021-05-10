@@ -47,7 +47,10 @@ const createIterator = (showNonenumerable, sortObjectKeys, symbol) => {
 
       for (const propertyName of keys) {
         if (propertyIsEnumerable.call(data, propertyName)) {
-          const hasAnyFields = !symbol || data[symbol].length;
+          // The idea was to hide unrelated paths
+          // sadly when there is match in params, request can be hidden and its not useful
+          // turned off for now
+          // const hasAnyFields = !symbol || data[symbol].length;
           if (
             !symbol ||
             data[symbol].includes(
@@ -59,7 +62,7 @@ const createIterator = (showNonenumerable, sortObjectKeys, symbol) => {
               name: propertyName || `""`,
               data: propertyValue,
             };
-          } else if (hasAnyFields && !dataIsArray) {
+          } else {
             const propertyValue = getPropertyValue(data, propertyName);
             yield {
               name: propertyName || `""`,

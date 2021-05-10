@@ -30,14 +30,16 @@ const ObjectPreview = ({ data }) => {
     object instanceof Date ||
     object instanceof RegExp
   ) {
-    return <ObjectValue object={object} />;
+    return <ObjectValue object={object} isPreview />;
   }
 
   if (Array.isArray(object)) {
     const maxProperties = styles.arrayMaxProperties;
     const previewArray = object
       .slice(0, maxProperties)
-      .map((element, index) => <ObjectValue key={index} object={element} />);
+      .map((element, index) => (
+        <ObjectValue key={index} object={element} isPreview />
+      ));
     if (object.length > maxProperties) {
       previewArray.push(<span key="ellipsis">…</span>);
     }
