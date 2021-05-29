@@ -252,6 +252,7 @@ const HighlightExample = () => {
 };
 const SearchExample = () => {
   const [value, setValue] = useState('');
+  const [hideUnrelated, setHideUnrelated] = useState(false);
   const [isDarkTheme, setDarkTheme] = useState(false);
   return (
     <section style={{ whiteSpace: 'pre' }}>
@@ -264,6 +265,14 @@ const SearchExample = () => {
           />
           isDarkTheme
         </label>
+        <label>
+          <input
+            type="checkbox"
+            value={hideUnrelated}
+            onChange={(e) => setHideUnrelated(e.target.checked)}
+          />
+          hideUnrelated
+        </label>
       </div>
       <div>
         <input
@@ -273,7 +282,7 @@ const SearchExample = () => {
           placeholder="Property key/value"
         />
       </div>
-      <SearchContext.Provider value={value}>
+      <SearchContext.Provider value={{ value, hideUnrelated }}>
         <Inspector
           data={data}
           theme={isDarkTheme ? 'chromeDark' : 'chromeLight'}

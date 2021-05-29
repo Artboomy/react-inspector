@@ -7,6 +7,6 @@ export default HighlightContext;
 
 export const useHighlight = (isDimmed) => {
   const highlightValue = useContext(HighlightContext);
-  const searchValue = useContext(SearchContext);
+  const { value: searchValue } = useContext(SearchContext);
   return isDimmed ? null : highlightValue || searchValue;
 };

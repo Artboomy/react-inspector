@@ -10,7 +10,12 @@ import { getPropertyValue } from '../utils/propertyUtils';
 import { themeAcceptor } from '../styles';
 import SearchContext, { markMatches } from '../utils/SearchContext';
 
-const createIterator = (showNonenumerable, sortObjectKeys, symbol) => {
+const createIterator = (
+  showNonenumerable,
+  sortObjectKeys,
+  symbol,
+  hideUnrelated
+) => {
   const objectIterator = function* (data) {
     const shouldIterate =
       (typeof data === 'object' && data !== null) || typeof data === 'function';
@@ -62,7 +67,7 @@ const createIterator = (showNonenumerable, sortObjectKeys, symbol) => {
               name: propertyName || `""`,
               data: propertyValue,
             };
-          } else {
+          } else if (!hideUnrelated) {
             const propertyValue = getPropertyValue(data, propertyName);
             yield {
               name: propertyName || `""`,
@@ -134,12 +139,13 @@ const ObjectInspector = ({
   data,
   ...treeViewProps
 }) => {
-  const searchValue = useContext(SearchContext);
+  const { value: searchValue, hideUnrelated } = useContext(SearchContext);
   const symbol = searchValue ? Symbol.for(searchValue) : null;
   const dataIterator = createIterator(
     showNonenumerable,
     sortObjectKeys,
-    symbol
+    symbol,
+    hideUnrelated
   );
   const renderer = nodeRenderer ? nodeRenderer : defaultNodeRenderer;
   if (symbol) {

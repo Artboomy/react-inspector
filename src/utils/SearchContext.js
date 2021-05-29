@@ -1,6 +1,6 @@
 import { createContext } from 'react';
 
-const SearchContext = createContext('');
+const SearchContext = createContext({ value: '', hideUnrelated: false });
 
 export default SearchContext;
 

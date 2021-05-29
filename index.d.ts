@@ -187,7 +187,7 @@ export const Inspector: React.ExoticComponent<InspectorProps>;
 export default Inspector;
 
 export const HighlightContext: Context<string>;
-export const SearchContext: Context<string>;
+export const SearchContext: Context<{ value: string; hideUnrelated: boolean }>;
 export const markMatches: (
   graphq: Record<string, any>,
   key: string,
