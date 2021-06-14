@@ -218,6 +218,10 @@ storiesOf('Functions', module)
   ));
 
 const data = {
+  a0: 'book',
+  a01: 'booK',
+  booK: '1',
+  book: '2',
   a1: 1,
   a2: 'A2',
   a3: true,
@@ -227,6 +231,7 @@ const data = {
     'a5-2': ['a5-2-1', 'a5-2-2'],
     'a5-3': {},
   },
+  a46: [1, 3, 4, 7],
   a6: function () {
     // eslint-disable-next-line
     console.log('hello world');
@@ -254,6 +259,7 @@ const SearchExample = () => {
   const [value, setValue] = useState('');
   const [hideUnrelated, setHideUnrelated] = useState(false);
   const [isDarkTheme, setDarkTheme] = useState(false);
+  const [caseSensitive, setCaseSensitive] = useState(false);
   return (
     <section style={{ whiteSpace: 'pre' }}>
       <div>
@@ -273,6 +279,14 @@ const SearchExample = () => {
           />
           hideUnrelated
         </label>
+        <label>
+          <input
+            type="checkbox"
+            value={caseSensitive}
+            onChange={(e) => setCaseSensitive(e.target.checked)}
+          />
+          caseSensitive
+        </label>
       </div>
       <div>
         <input
@@ -282,7 +296,7 @@ const SearchExample = () => {
           placeholder="Property key/value"
         />
       </div>
-      <SearchContext.Provider value={{ value, hideUnrelated }}>
+      <SearchContext.Provider value={{ value, hideUnrelated, caseSensitive }}>
         <Inspector
           data={data}
           theme={isDarkTheme ? 'chromeDark' : 'chromeLight'}

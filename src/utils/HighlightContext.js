@@ -7,6 +7,16 @@ export default HighlightContext;
 
 export const useHighlight = (isDimmed) => {
   const highlightValue = useContext(HighlightContext);
+  const { caseSensitive } = useContext(SearchContext);
   const { value: searchValue } = useContext(SearchContext);
-  return isDimmed ? null : highlightValue || searchValue;
+  if (isDimmed) {
+    return null;
+  }
+  const rawValue = highlightValue || searchValue;
+  const value = caseSensitive
+    ? rawValue
+    : typeof rawValue === 'string'
+    ? rawValue.toLowerCase()
+    : rawValue;
+  return value;
 };

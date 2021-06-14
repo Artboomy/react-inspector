@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 
 import { useStyles } from '../styles';
@@ -7,6 +7,7 @@ import {
   fullMatchHighlight,
   partialHighlight,
 } from '../utils/stringManipulations';
+import SearchContext from '../utils/SearchContext';
 
 const stringRender = (
   value,
@@ -65,6 +66,7 @@ const ObjectValue = ({
 }) => {
   const themeStyles = useStyles('ObjectValue');
   const highlight = useHighlight(isDimmed);
+  const { caseSensitive } = useContext(SearchContext);
   const mkStyle = (key) => ({
     ...themeStyles[key],
     ...styles,
@@ -77,6 +79,7 @@ const ObjectValue = ({
         <span style={mkStyle('objectValueNumber')}>
           {partialHighlight(String(object), highlight, {
             style: themeStyles['highlight'],
+            caseSensitive,
           })}
           n
         </span>
@@ -86,6 +89,7 @@ const ObjectValue = ({
         <span style={mkStyle('objectValueNumber')}>
           {partialHighlight(String(object), highlight, {
             style: themeStyles['highlight'],
+            caseSensitive,
           })}
         </span>
       );
@@ -96,13 +100,14 @@ const ObjectValue = ({
         mkStyle('objectValueString'),
         isPreview,
         highlight,
-        { style: themeStyles['highlight'] }
+        { style: themeStyles['highlight'], caseSensitive }
       );
     case 'boolean':
       return (
         <span style={mkStyle('objectValueBoolean')}>
           {fullMatchHighlight(String(object), highlight, {
             style: themeStyles['highlight'],
+            caseSensitive,
           })}
         </span>
       );
@@ -111,6 +116,7 @@ const ObjectValue = ({
         <span style={mkStyle('objectValueUndefined')}>
           {fullMatchHighlight('undefined', highlight, {
             style: themeStyles['highlight'],
+            caseSensitive,
           })}
         </span>
       );
@@ -120,6 +126,7 @@ const ObjectValue = ({
           <span style={mkStyle('objectValueNull')}>
             {fullMatchHighlight('null', highlight, {
               style: themeStyles['highlight'],
+              caseSensitive,
             })}
           </span>
         );
@@ -129,6 +136,7 @@ const ObjectValue = ({
           <span style={isDimmed ? themeStyles['objectValueDimmed'] : {}}>
             {partialHighlight(object.toString(), highlight, {
               style: themeStyles['highlight'],
+              caseSensitive,
             })}
           </span>
         );

@@ -187,13 +187,36 @@ export const Inspector: React.ExoticComponent<InspectorProps>;
 export default Inspector;
 
 export const HighlightContext: Context<string>;
-export const SearchContext: Context<{ value: string; hideUnrelated: boolean }>;
+export const SearchContext: Context<{
+  value: string;
+  hideUnrelated?: boolean;
+  caseSensitive?: boolean;
+}>;
 export const markMatches: (
   graphq: Record<string, any>,
   key: string,
   marker: (key: string, value: any) => boolean,
-  symbol: Symbol
+  symbol: symbol
 ) => boolean;
+
+export const isVisible: (
+  graphq: Record<string, any>,
+  key: string,
+  marker: (key: string, value: any) => boolean
+) => boolean;
+
+type marker = (k: any, v: any) => boolean;
+
+export const createMarker: (
+  comparator: (k: any, v: any) => boolean,
+  searchValue: any
+) => marker;
+
+export const useSearchParams: () => {
+  symbol: symbol;
+  marker: marker;
+  hideUnrelated: boolean;
+};
 
 export const partialHighlight: (
   value: any,

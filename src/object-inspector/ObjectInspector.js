@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import TreeView from '../tree-view/TreeView';
 import ObjectRootLabel from './ObjectRootLabel';
@@ -8,7 +8,7 @@ import { propertyIsEnumerable } from '../utils/objectPrototype';
 import { getPropertyValue } from '../utils/propertyUtils';
 
 import { themeAcceptor } from '../styles';
-import SearchContext, { markMatches } from '../utils/SearchContext';
+import { markMatches, useSearchParams } from '../utils/SearchContext';
 
 const createIterator = (
   showNonenumerable,
@@ -119,7 +119,7 @@ const defaultNodeRenderer = ({
   isDimmed,
 }) =>
   depth === 0 ? (
-    <ObjectRootLabel name={name} data={data} />
+    <ObjectRootLabel name={name} data={data} isDimmed={isDimmed} />
   ) : (
     <ObjectLabel
       name={name}
@@ -139,8 +139,7 @@ const ObjectInspector = ({
   data,
   ...treeViewProps
 }) => {
-  const { value: searchValue, hideUnrelated } = useContext(SearchContext);
-  const symbol = searchValue ? Symbol.for(searchValue) : null;
+  const { symbol, marker, hideUnrelated } = useSearchParams();
   const dataIterator = createIterator(
     showNonenumerable,
     sortObjectKeys,
@@ -149,16 +148,7 @@ const ObjectInspector = ({
   );
   const renderer = nodeRenderer ? nodeRenderer : defaultNodeRenderer;
   if (symbol) {
-    markMatches(
-      { data },
-      'data',
-      (k, v) => {
-        return (
-          String(k).includes(searchValue) || String(v).includes(searchValue)
-        );
-      },
-      symbol
-    );
+    markMatches({ data }, 'data', marker, symbol);
   }
   return (
     <TreeView

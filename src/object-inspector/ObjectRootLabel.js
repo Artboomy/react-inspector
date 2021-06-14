@@ -1,8 +1,10 @@
 import React from 'react';
 import ObjectName from '../object/ObjectName';
 import ObjectPreview from './ObjectPreview';
+import { useSearchParams } from '../utils/SearchContext';
 
 const ObjectRootLabel = ({ name, data }) => {
+  const { symbol } = useSearchParams();
   if (typeof name === 'string') {
     return (
       <span>
@@ -12,7 +14,7 @@ const ObjectRootLabel = ({ name, data }) => {
       </span>
     );
   } else {
-    return <ObjectPreview data={data} />;
+    return <ObjectPreview data={data} symbol={symbol} />;
   }
 };
 

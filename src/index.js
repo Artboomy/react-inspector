@@ -12,7 +12,12 @@ export ObjectValue from './object/ObjectValue';
 export ObjectName from './object/ObjectName';
 
 export HighlightContext from './utils/HighlightContext';
-export SearchContext, { markMatches } from './utils/SearchContext';
+export SearchContext, {
+  markMatches,
+  useSearchParams,
+  createMarker,
+  isVisible,
+} from './utils/SearchContext';
 export {
   partialHighlight,
   fullMatchHighlight,

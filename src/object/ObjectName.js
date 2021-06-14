@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { useStyles } from '../styles';
 import { useHighlight } from '../utils/HighlightContext';
 import { partialHighlight } from '../utils/stringManipulations';
+import SearchContext from '../utils/SearchContext';
 
 /**
  * A view for object property names.
@@ -27,11 +28,14 @@ const ObjectName = ({
     ...styles,
   };
   const highlight = useHighlight(dimmed);
-
+  const { caseSensitive } = useContext(SearchContext);
   return (
     <span style={appliedStyles}>
       {highlight
-        ? partialHighlight(name, highlight, { style: themeStyles['highlight'] })
+        ? partialHighlight(name, highlight, {
+            style: themeStyles['highlight'],
+            caseSensitive,
+          })
         : name}
     </span>
   );

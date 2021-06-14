@@ -20,7 +20,7 @@ function intersperse(arr, sep) {
 /**
  * A preview of the object
  */
-const ObjectPreview = ({ data }) => {
+const ObjectPreview = ({ data, symbol }) => {
   const styles = useStyles('ObjectPreview');
   const object = data;
 
@@ -55,8 +55,13 @@ const ObjectPreview = ({ data }) => {
   } else {
     const maxProperties = styles.objectMaxProperties;
     let propertyNodes = [];
+    const propertyVisible = (propertyName) =>
+      symbol ? object[symbol].includes(propertyName) : true;
     for (const propertyName in object) {
-      if (hasOwnProperty.call(object, propertyName)) {
+      if (
+        hasOwnProperty.call(object, propertyName) &&
+        propertyVisible(propertyName)
+      ) {
         let ellipsis;
         if (
           propertyNodes.length === maxProperties - 1 &&
@@ -76,6 +81,9 @@ const ObjectPreview = ({ data }) => {
         );
         if (ellipsis) break;
       }
+    }
+    if (!propertyNodes.length && Object.keys(object).length && symbol) {
+      return <i>Filtered</i>;
     }
 
     const objectConstructorName = object.constructor
