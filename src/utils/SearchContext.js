@@ -1,4 +1,4 @@
-import { useContext, createContext } from 'react';
+import { useContext, createContext, useMemo } from 'react';
 
 const SearchContext = createContext({
   value: '',
@@ -23,7 +23,10 @@ export const useSearchParams = () => {
       ? value
       : value.toLowerCase()
     : null;
-  const marker = createMarker(comparator, searchValue);
+  const marker = useMemo(() => createMarker(comparator, searchValue), [
+    comparator,
+    searchValue,
+  ]);
   return { symbol, marker, hideUnrelated };
 };
 
