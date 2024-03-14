@@ -20,7 +20,8 @@ const stringRender = (
   let result = value;
   if (typeof value === 'string') {
     const lengthLimit = 500;
-    const isLongValue = value.length > lengthLimit;
+    const lengthPreviewLimit = 50;
+    const isLongValue = value.length > (isPreview ? lengthPreviewLimit : lengthLimit);
     const modifiedSpanStyle = {
       ...spanStyle,
       ...(isPreview && { whiteSpace: 'normal' }),
@@ -29,7 +30,7 @@ const stringRender = (
       if (isPreview) {
         result = (
           <span style={modifiedSpanStyle}>
-            "{partialHighlight(value.slice(0, 50), highlight, style)}…"
+            "{partialHighlight(`${value.slice(0, 30)}…${value.slice(value.length - 11)}`, highlight, style)}"
           </span>
         );
       } else {
