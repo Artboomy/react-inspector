@@ -30,7 +30,7 @@ const ObjectPreview = ({ data, symbol }) => {
     object instanceof Date ||
     object instanceof RegExp
   ) {
-    return <ObjectValue object={object} isPreview />;
+    return <ObjectValue object={object} />;
   }
 
   if (Array.isArray(object)) {

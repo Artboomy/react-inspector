@@ -436,7 +436,10 @@ storiesOf('Nested object examples', module)
     <Inspector
       expandLevel={3}
       data={{
-        a: text.repeat(1)
+        a: text.repeat(5),
+        b: {
+          c: text.repeat(5)
+        }
       }}
     />
   ))
