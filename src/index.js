@@ -46,6 +46,8 @@ Inspector.propTypes = {
   data: PropTypes.any,
   name: PropTypes.string,
   table: PropTypes.bool,
+  /** Handler for mouse down */
+  onMouseDown: PropTypes.func,
 };
 
 export { Inspector };

@@ -177,6 +177,9 @@ ObjectInspector.propTypes = {
 
   /** Provide a custom nodeRenderer */
   nodeRenderer: PropTypes.func,
+  
+  /** Handler for mouse down */
+  onMouseDown: PropTypes.func,
 };
 
 export default themeAcceptor(ObjectInspector);

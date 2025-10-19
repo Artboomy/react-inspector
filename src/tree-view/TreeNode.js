@@ -17,6 +17,7 @@ const TreeNode = memo(function TreeNodeMemo(props) {
     expanded: true,
     nodeRenderer: ({ name }) => <span>{name}</span>,
     onClick: () => {},
+    onMouseDown: () => {},
     shouldShowArrow: false,
     shouldShowPlaceholder: true,
     ...props,
@@ -24,6 +25,7 @@ const TreeNode = memo(function TreeNodeMemo(props) {
   const {
     expanded,
     onClick,
+    onMouseDown,
     children,
     nodeRenderer,
     title,
@@ -44,7 +46,10 @@ const TreeNode = memo(function TreeNodeMemo(props) {
         ...(hasChildren && { cursor: 'pointer' }),
       }}
       title={title}>
-      <div style={styles.treeNodePreviewContainer} onClick={onClick}>
+      <div
+        style={styles.treeNodePreviewContainer}
+        onClick={onClick}
+        onMouseDown={onMouseDown}>
         {hasChildren ? (
           <Arrow expanded={expanded} styles={styles.treeNodeArrow} />
         ) : (
@@ -70,6 +75,7 @@ TreeNode.propTypes = {
   shouldShowPlaceholder: PropTypes.bool,
   nodeRenderer: PropTypes.func,
   onClick: PropTypes.func,
+  onMouseDown: PropTypes.func,
 };
 
 export default TreeNode;

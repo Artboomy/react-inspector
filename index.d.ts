@@ -140,6 +140,7 @@ export interface InspectorAsTreeProps
     DOMInspectorProps {
   table?: false;
   data: any;
+  onMouseDown: (event: React.MouseEvent<HTMLDivElement>, data: unknown) => void
 }
 
 export type InspectorProps = InspectorAsTableProps | InspectorAsTreeProps;

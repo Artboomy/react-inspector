@@ -17,19 +17,24 @@ import {
 import { useStyles } from '../styles';
 
 const ConnectedTreeNode = memo(function ConnectedTreeNodeMemo(props) {
-  const { data, dataIterator, path, depth, nodeRenderer } = props;
+  const { data, dataIterator, path, depth, nodeRenderer, onMouseDown } = props;
   const [expandedPaths, setExpandedPaths] = useContext(ExpandedPathsContext);
   const nodeHasChildNodes = hasChildNodes(data, dataIterator);
   const expanded = !!expandedPaths[path];
 
-  const handleClick = useCallback(
-    () =>
-      nodeHasChildNodes &&
+  const handleClick = useCallback(() => {
+    nodeHasChildNodes &&
       setExpandedPaths((prevExpandedPaths) => ({
         ...prevExpandedPaths,
         [path]: !expanded,
-      })),
-    [nodeHasChildNodes, setExpandedPaths, path, expanded]
+      }));
+  }, [nodeHasChildNodes, setExpandedPaths, path, expanded]);
+
+  const handleMouseDown = useCallback(
+    (event) => {
+      onMouseDown?.(event, data, path);
+    },
+    [data, onMouseDown]
   );
 
   return (
@@ -42,7 +47,8 @@ const ConnectedTreeNode = memo(function ConnectedTreeNodeMemo(props) {
       shouldShowPlaceholder={depth > 0}
       // Render a node from name and data (or possibly other props like isNonenumerable)
       nodeRenderer={nodeRenderer}
-      {...props}>
+      {...props}
+      onMouseDown={handleMouseDown}>
       {
         // only render if the node is expanded
         expanded
@@ -57,6 +63,7 @@ const ConnectedTreeNode = memo(function ConnectedTreeNodeMemo(props) {
                     key={name}
                     dataIterator={dataIterator}
                     nodeRenderer={nodeRenderer}
+                    onMouseDown={onMouseDown}
                     {...renderNodeProps}
                   />
                 );
@@ -75,6 +82,7 @@ ConnectedTreeNode.propTypes = {
   depth: PropTypes.number,
   expanded: PropTypes.bool,
   nodeRenderer: PropTypes.func,
+  onMouseDown: PropTypes.func,
 };
 
 const TreeView = memo(function TreeViewMemo({
@@ -84,6 +92,7 @@ const TreeView = memo(function TreeViewMemo({
   nodeRenderer,
   expandPaths,
   expandLevel,
+  onMouseDown,
 }) {
   const styles = useStyles('TreeView');
   const stateAndSetter = useState({});
@@ -113,6 +122,7 @@ const TreeView = memo(function TreeViewMemo({
           depth={0}
           path={DEFAULT_ROOT_PATH}
           nodeRenderer={nodeRenderer}
+          onMouseDown={onMouseDown}
         />
       </ol>
     </ExpandedPathsContext.Provider>
@@ -126,6 +136,8 @@ TreeView.propTypes = {
   nodeRenderer: PropTypes.func,
   expandPaths: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
   expandLevel: PropTypes.number,
+  /** Handler for mouse down */
+  onMouseDown: PropTypes.func,
 };
 
 export default TreeView;

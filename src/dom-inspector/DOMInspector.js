@@ -56,6 +56,9 @@ const DOMInspector = props => {
 DOMInspector.propTypes = {
   // The DOM Node to inspect
   data: PropTypes.object.isRequired,
+  
+  /** Handler for mouse down */
+  onMouseDown: PropTypes.func,
 };
 
 export default themeAcceptor(DOMInspector);

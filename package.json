@@ -1,6 +1,6 @@
 {
   "name": "react-inspector",
-  "version": "5.3.7",
+  "version": "5.3.9",
   "description": "Power of Browser DevTools inspectors right inside your React app",
   "keywords": [
     "devtools",
@@ -33,7 +33,7 @@
   "main": "dist/cjs/react-inspector.js",
   "module": "dist/es/react-inspector.js",
   "files": [
-    "dist/*/",
+    "dist/",
     "README.md",
     "LICENSE",
     "HISTORY.md",
@@ -105,5 +105,6 @@
   },
   "peerDependencies": {
     "react": "^16.8.4 || ^17.0.0"
-  }
+  },
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }
