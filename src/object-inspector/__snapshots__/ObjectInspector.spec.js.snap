@@ -31,6 +31,7 @@ exports[`ObjectInspector passes \`nodeRenderer\` prop to <TreeView/> 1`] = `
   >
     <div
       onClick={[Function]}
+      onMouseDown={[Function]}
       style={Object {}}
     >
       <span>
@@ -79,6 +80,7 @@ exports[`ObjectInspector should render 1`] = `
   >
     <div
       onClick={[Function]}
+      onMouseDown={[Function]}
       style={Object {}}
     >
       <span

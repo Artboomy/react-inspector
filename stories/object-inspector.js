@@ -4,8 +4,7 @@ import { storiesOf } from '@storybook/react';
 import Inspector, { HighlightContext } from '../src';
 import SearchContext from '../src/utils/SearchContext';
 
-function namedFunction() {
-}
+function namedFunction() {}
 
 // Primitives
 storiesOf('Numbers', module)
@@ -24,14 +23,13 @@ storiesOf('BigInts', module)
 
 const longString = Array(500).fill('lorem impsum').join(' ');
 
-class SomeNamedObject {
-}
+class SomeNamedObject {}
 
 const namedObject = new SomeNamedObject();
 
 storiesOf('Strings', module)
-  .add('empty string', () => <Inspector data='' />)
-  .add('simple', () => <Inspector data='hello' />)
+  .add('empty string', () => <Inspector data="" />)
+  .add('simple', () => <Inspector data="hello" />)
   .add('long', () => <Inspector data={longString} />);
 
 storiesOf('Booleans', module)
@@ -122,13 +120,13 @@ storiesOf('Objects', module)
     <Inspector
       showNonenumerable
       expandLevel={2}
-      name='test'
+      name="test"
       data={{ k: 'v' }}
     />
   ))
   .add(
     'Object: `Object.create(null)` (Empty object with null prototype)',
-    () => <Inspector showNonenumerable data={Object.create(null)} />,
+    () => <Inspector showNonenumerable data={Object.create(null)} />
   )
   .add('Object: Object with null prototype', () => (
     <Inspector
@@ -209,12 +207,10 @@ storiesOf('Sets', module)
 
 storiesOf('Functions', module)
   .add('Functions: anonymous function', () => (
-    <Inspector data={function() {
-    }} />
+    <Inspector data={function () {}} />
   ))
   .add('Functions: anonymous arrow function', () => (
-    <Inspector data={() => {
-    }} />
+    <Inspector data={() => {}} />
   ))
   .add('Functions: named function', () => <Inspector data={namedFunction} />)
   .add('Functions: named function (show non-enumerable properties)', () => (
@@ -236,29 +232,40 @@ const data = {
     'a5-3': {},
   },
   a46: [1, 3, 4, 7],
-  a6: function() {
+  a6: function () {
     // eslint-disable-next-line
     console.log('hello world');
   },
   a7: new Date('2005-04-03'),
-  a8: JSON.stringify({ field: '123', text: 'this is nested text which should be converted to object', value: false }),
-  a9: JSON.stringify(['another', { value: 'nested' }, 'and', ['converted'], 1, 'example']),
+  a8: JSON.stringify({
+    field: '123',
+    text: 'this is nested text which should be converted to object',
+    value: false,
+  }),
+  a9: JSON.stringify([
+    'another',
+    { value: 'nested' },
+    'and',
+    ['converted'],
+    1,
+    'example',
+  ]),
 };
 
 const text = `"{"sent_at":"2024-03-14T10:56:50.514Z","sdk":{"name":"sentry.javascript.browser","version":"7.105.0"}}
     {"type":"session"} {"sid":"5d498a295d29479a9eae79e5552a676e","init":true,"started":"2024-03-14T10:56:50.514Z",
     "timestamp":"2024-03-14T10:56:50.514Z","status":"ok","errors":0,"attrs":{"release":"backlog_frontend@master-6d512dff",
-    "environment":"staging","user_agent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36"}}\'"`
+    "environment":"staging","user_agent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36"}}'"`;
 
 const HighlightExample = () => {
   const [value, setValue] = useState('');
   return (
     <section>
       <input
-        type='text'
+        type="text"
         value={value}
         onChange={(e) => setValue(e.target.value)}
-        placeholder='Property key/value'
+        placeholder="Property key/value"
       />
       <HighlightContext.Provider value={value}>
         <Inspector data={data} />
@@ -276,7 +283,7 @@ const SearchExample = () => {
       <div>
         <label>
           <input
-            type='checkbox'
+            type="checkbox"
             value={isDarkTheme}
             onChange={(e) => setDarkTheme(e.target.checked)}
           />
@@ -284,7 +291,7 @@ const SearchExample = () => {
         </label>
         <label>
           <input
-            type='checkbox'
+            type="checkbox"
             value={hideUnrelated}
             onChange={(e) => setHideUnrelated(e.target.checked)}
           />
@@ -292,7 +299,7 @@ const SearchExample = () => {
         </label>
         <label>
           <input
-            type='checkbox'
+            type="checkbox"
             value={caseSensitive}
             onChange={(e) => setCaseSensitive(e.target.checked)}
           />
@@ -301,10 +308,10 @@ const SearchExample = () => {
       </div>
       <div>
         <input
-          type='text'
+          type="text"
           value={value}
           onChange={(e) => setValue(e.target.value)}
-          placeholder='Property key/value'
+          placeholder="Property key/value"
         />
       </div>
       <SearchContext.Provider value={{ value, hideUnrelated, caseSensitive }}>
@@ -339,6 +346,7 @@ storiesOf('Nested object examples', module)
           longitude: 20.4,
         },
       }}
+      onMouseDown={(e, d) => console.info('onMouseDown', e, d)}
     />
   ))
   .add('Github', () => (
@@ -424,7 +432,7 @@ storiesOf('Nested object examples', module)
           'a5-2': ['a5-2-1', 'a5-2-2'],
           'a5-3': {},
         },
-        a6: function() {
+        a6: function () {
           // eslint-disable-next-line
           console.log('hello world');
         },
@@ -438,8 +446,8 @@ storiesOf('Nested object examples', module)
       data={{
         a: text.repeat(5),
         b: {
-          c: text.repeat(5)
-        }
+          c: text.repeat(5),
+        },
       }}
     />
   ))
