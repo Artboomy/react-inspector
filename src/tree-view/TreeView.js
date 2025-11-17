@@ -22,13 +22,52 @@ const ConnectedTreeNode = memo(function ConnectedTreeNodeMemo(props) {
   const nodeHasChildNodes = hasChildNodes(data, dataIterator);
   const expanded = !!expandedPaths[path];
 
-  const handleClick = useCallback(() => {
-    nodeHasChildNodes &&
-      setExpandedPaths((prevExpandedPaths) => ({
-        ...prevExpandedPaths,
-        [path]: !expanded,
-      }));
-  }, [nodeHasChildNodes, setExpandedPaths, path, expanded]);
+  const getDescendantExpandablePaths = useCallback(
+    (nodeData, basePath) => {
+      const acc = [];
+      for (const { name, data: childData } of dataIterator(nodeData)) {
+        const childPath = `${basePath}.${name}`;
+        if (hasChildNodes(childData, dataIterator)) {
+          acc.push(childPath);
+          // recurse only into expandable nodes
+          acc.push(...getDescendantExpandablePaths(childData, childPath));
+        }
+      }
+      return acc;
+    },
+    [dataIterator]
+  );
+
+  const handleClick = useCallback(
+    (event) => {
+      if (!nodeHasChildNodes) return;
+      const recursive = !!(event && (event.metaKey || event.ctrlKey));
+      if (!recursive) {
+        setExpandedPaths((prevExpandedPaths) => ({
+          ...prevExpandedPaths,
+          [path]: !expanded,
+        }));
+        return;
+      }
+
+      // Recursive expand/collapse when Cmd/Ctrl is pressed
+      setExpandedPaths((prevExpandedPaths) => {
+        const next = { ...prevExpandedPaths };
+        const descendantPaths = getDescendantExpandablePaths(data, path);
+        if (!expanded) {
+          // expanding: include current path and all descendants
+          next[path] = true;
+          for (const p of descendantPaths) next[p] = true;
+        } else {
+          // collapsing: remove current path and all descendants
+          delete next[path];
+          for (const p of descendantPaths) delete next[p];
+        }
+        return next;
+      });
+    },
+    [nodeHasChildNodes, setExpandedPaths, path, expanded, getDescendantExpandablePaths, data]
+  );
 
   const handleMouseDown = useCallback(
     (event) => {
