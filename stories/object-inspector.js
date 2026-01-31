@@ -3,7 +3,6 @@ import { storiesOf } from '@storybook/react';
 
 import Inspector, { HighlightContext } from '../src';
 import SearchContext from '../src/utils/SearchContext';
-
 function namedFunction() {}
 
 // Primitives
@@ -273,6 +272,7 @@ const HighlightExample = () => {
     </section>
   );
 };
+
 const SearchExample = () => {
   const [value, setValue] = useState('');
   const [hideUnrelated, setHideUnrelated] = useState(false);
@@ -316,7 +316,21 @@ const SearchExample = () => {
       </div>
       <SearchContext.Provider value={{ value, hideUnrelated, caseSensitive }}>
         <Inspector
-          data={data}
+          data={[{
+            "name": "somename",
+            "configs": {
+              "foo": [
+              ],
+              "connections": [],
+              "bar": [],
+              "foobar": [],
+              "whatever": ["con"],
+              "etc": [],
+              "animal": [],
+              "dog": [],
+              "cat": [],
+            }
+          }]}
           theme={isDarkTheme ? 'chromeDark' : 'chromeLight'}
           searchCallback={(result) =>
             console.info(`Search result is ${result}`)

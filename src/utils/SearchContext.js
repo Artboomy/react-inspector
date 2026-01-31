@@ -12,6 +12,9 @@ export default SearchContext;
 
 export const useSearchParams = () => {
   const { value, caseSensitive, hideUnrelated } = useContext(SearchContext);
+  return compileSearchParams(value, caseSensitive, hideUnrelated);
+}
+export const compileSearchParams = (value, caseSensitive, hideUnrelated) => {
   const symbol = value
     ? Symbol.for(
         `${caseSensitive ? value : value.toLowerCase()}.${caseSensitive}`
@@ -61,9 +64,10 @@ export function isVisible(graph, key, marker) {
         marker(key, noValueCheckSymbol) ||
         item.map((_, idx) => isVisible(item, idx, marker)).some((t) => t);
     } else {
-      shouldShow = Object.keys(item)
-        .map((key) => isVisible(item, key, marker))
-        .some((t) => t);
+      shouldShow =
+        Object.keys(item)
+          .map((key) => isVisible(item, key, marker))
+          .some((t) => t) || marker(key, noValueCheckSymbol);
     }
   } else {
     //invoke marker
@@ -87,6 +91,7 @@ export function markMatches(graph, key, marker, symbol) {
       shouldShow = Object.keys(item)
         .map((key) => markMatches(item, key, marker, symbol))
         .some((t) => t);
+      shouldShow = marker(key, noValueCheckSymbol) || shouldShow;
     }
   } else {
     //invoke marker
